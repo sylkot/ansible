@@ -1,0 +1,66 @@
+Vagrant.configure("2") do |config|
+  config.hostmanager.enabled = true 
+  config.hostmanager.manage_host = true
+	
+### Ansible VM ###
+  config.vm.define "ansible" do |ansible|
+    ansible.vm.box = "ubuntu/bionic64"
+    ansible.vm.hostname = "ansible"
+	ansible.vm.network "private_network", ip: "192.168.56.15"
+	ansible.vm.provider "virtualbox" do |vb|
+     vb.memory = "1024"
+	 vb.cpus = 1
+	 end
+	ansible.vm.provision "shell", inline: <<-SHELL
+	sudo apt update
+	sudo apt install software-properties-common -y
+	sudo add-apt-repository --yes --update ppa:ansible/ansible
+	sudo apt install ansible -y
+	SHELL
+  end
+  
+### Web01 vm ###
+   config.vm.define "web01" do |web01|
+    web01.vm.box = "geerlingguy/centos7"
+    web01.vm.hostname = "web01"
+    web01.vm.network "private_network", ip: "192.168.56.16"
+	web01.vm.provider "virtualbox" do |vb|
+     vb.memory = "1024"
+	 vb.cpus = 1
+	 end
+   end
+   
+### Web02 vm ###
+   config.vm.define "web02" do |web02|
+    web02.vm.box = "geerlingguy/centos7"
+    web02.vm.hostname = "web02"
+    web02.vm.network "private_network", ip: "192.168.56.17"
+	web02.vm.provider "virtualbox" do |vb|
+     vb.memory = "1024"
+	 vb.cpus = 1
+	 end
+   end    
+   
+### Db01 vm ###
+   config.vm.define "db01" do |db01|
+    db01.vm.box = "geerlingguy/centos7"
+    db01.vm.hostname = "db01"
+    db01.vm.network "private_network", ip: "192.168.56.18"
+	db01.vm.provider "virtualbox" do |vb|
+     vb.memory = "1024"
+	 vb.cpus = 1
+	 end
+   end
+   
+### Web03 vm ###
+   config.vm.define "web03" do |web03|
+    web03.vm.box = "ubuntu/bionic64"
+    web03.vm.hostname = "web03"
+    web03.vm.network "private_network", ip: "192.168.56.19"
+	web03.vm.provider "virtualbox" do |vb|
+     vb.memory = "1024"
+	 vb.cpus = 1
+	 end
+   end  
+
+end

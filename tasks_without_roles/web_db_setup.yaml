@@ -1,0 +1,32 @@
+---
+- name: Setup WebServer
+  hosts: web01, web02
+  become: yes
+  tasks: 
+    - name: Install Apache httpd
+      yum:
+        name: httpd
+        state: present
+    - name: Start&Enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: Copy web file
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+
+- name: Setup DBserver
+  hosts: dbsrvgrp
+  become: yes
+  tasks:
+    - name: Install MySQL server
+      yum:
+        name: mariadb-server
+        state: present
+    - name: Start&Enable mariadb service
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
